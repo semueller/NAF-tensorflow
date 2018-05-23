@@ -9,20 +9,22 @@ TensorFlow implementation of [Continuous Deep q-Learning with Model-based Accele
 ![algorithm](https://github.com/carpedm20/naf-tensorflow/blob/master/assets/algorithm.png)
 
 ## Environments:
-"InvertedPendulum-v1"
-"InvertedDoublePendulum-v1"
-"Reacher-v1"
-"HalfCheetah-v1"
-"Swimmer-v1"
-"Hopper-v1"
-"Walker2d-v1"
-"Ant-v1"
-"HumanoidStandup-v1"
+
+- InvertedPendulum-v1
+- InvertedDoublePendulum-v1
+- Reacher-v1
+- HalfCheetah-v1
+- Swimmer-v1
+- Hopper-v1
+- Walker2d-v1
+- Ant-v1
+- HumanoidStandup-v1
 
 
-## Usage
+## Installation and Usage
 
 The code depends on outdated software, until it is updated to work with current versions of gym/ tensorflow /mujoco, set up a custom virtualenv (eg with conda) for this:
+
     $ conda create --name naf python=2.7
     $ source actiavate naf
     $ ./setup.sh
