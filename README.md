@@ -1,7 +1,3 @@
-## Original Author 
-
-Taehoon Kim / [@carpedm20](http://carpedm20.github.io/)
-
 # Normalized Advantage Functions (NAF) in TensorFlow
 
 TensorFlow implementation of [Continuous Deep q-Learning with Model-based Acceleration](http://arxiv.org/abs/1603.00748).
@@ -23,7 +19,7 @@ TensorFlow implementation of [Continuous Deep q-Learning with Model-based Accele
 
 ## Installation and Usage
 
-The code depends on outdated software, until it is updated to work with current versions of gym/ tensorflow /mujoco, set up a custom virtualenv (eg with conda) for this:
+The code depends on outdated software, until it is updated to work with current versions of gym/ tensorflow /mujoco, set up a custom virtualenv (eg with conda) for this and run setup.sh:
 
     $ conda create --name naf python=2.7
     $ source actiavate naf
@@ -57,4 +53,6 @@ Training details of `Pendulum-v0` with different hyperparameters.
 - [rllab](https://github.com/rllab/rllab.git)
 - [keras implementation](https://gym.openai.com/evaluations/eval_CzoNQdPSAm0J3ikTBSTCg)
 
+## Original Author 
 
+Taehoon Kim / [@carpedm20](http://carpedm20.github.io/)
