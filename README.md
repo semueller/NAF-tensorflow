@@ -1,22 +1,31 @@
+## Original Author 
+
+Taehoon Kim / [@carpedm20](http://carpedm20.github.io/)
+
 # Normalized Advantage Functions (NAF) in TensorFlow
 
 TensorFlow implementation of [Continuous Deep q-Learning with Model-based Acceleration](http://arxiv.org/abs/1603.00748).
 
 ![algorithm](https://github.com/carpedm20/naf-tensorflow/blob/master/assets/algorithm.png)
 
-
-## Requirements
-
-- Python 2.7
-- [gym](https://github.com/openai/gym)
-- [TensorFlow](https://www.tensorflow.org/) 0.9+
+## Environments:
+"InvertedPendulum-v1"
+"InvertedDoublePendulum-v1"
+"Reacher-v1"
+"HalfCheetah-v1"
+"Swimmer-v1"
+"Hopper-v1"
+"Walker2d-v1"
+"Ant-v1"
+"HumanoidStandup-v1"
 
 
 ## Usage
 
-First, install prerequisites with:
-
-    $ pip install tqdm gym[all]
+The code depends on outdated software, until it is updated to work with current versions of gym/ tensorflow /mujoco, set up a custom virtualenv (eg with conda) for this:
+    $ conda create --name naf python=2.7
+    $ source actiavate naf
+    $ ./setup.sh
 
 To train a model for an environment with a continuous action space:
 
@@ -47,6 +56,3 @@ Training details of `Pendulum-v0` with different hyperparameters.
 - [keras implementation](https://gym.openai.com/evaluations/eval_CzoNQdPSAm0J3ikTBSTCg)
 
 
-## Author
-
-Taehoon Kim / [@carpedm20](http://carpedm20.github.io/)

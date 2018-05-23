@@ -1,5 +1,7 @@
 # misc
-logs
+logs*
+.idea
+
 
 # data
 samples
