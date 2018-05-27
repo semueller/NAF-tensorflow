@@ -11,6 +11,9 @@ class Statistic(object):
     self.env_name = env_name
     self.max_update_per_step = max_update_per_step
 
+    self.last_save = 0
+    self.max_steps_without_save = 5000
+
     self.reset()
     self.max_avg_r = None
 
@@ -71,6 +74,13 @@ class Statistic(object):
         self.save_model(self.t)
         self.max_avg_r = max(self.max_avg_r, avg_r)
 
+      print(self.t-self.last_save)
+      if (self.t - self.last_save) > self.max_steps_without_save:
+        logger.info('Not saved for more than %d steps' % self.max_steps_without_save)
+        self.save_model(self.t)
+        self.last_save = int(self.t)
+
+
       self.inject_summary({
         'total r': total_r, 'avg r': avg_r,
         'avg q': avg_q, 'avg v': avg_v, 'avg a': avg_a, 'avg l': avg_l,
@@ -107,3 +117,4 @@ class Statistic(object):
       logger.info("Load FAILED: %s" % self.model_dir)
 
     self.t = self.t_add_op.eval(session=self.sess)
+    self.last_save = self.t

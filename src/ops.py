@@ -28,7 +28,7 @@ def fc(layer, output_size, is_training,
       layer,
       num_outputs=output_size,
       activation_fn=activation_fn,
-      weights_initializer=weight_init,
+      weights_initializer=weight_init, #default from main<conf.hidden_w>: uniform_big
       weights_regularizer=weight_reg,
       biases_initializer=tf.constant_initializer(0.0),
       scope=scope,

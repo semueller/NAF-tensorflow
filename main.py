@@ -12,7 +12,7 @@ from utils import get_model_dir, preprocess_conf
 flags = tf.app.flags
 
 # environment
-flags.DEFINE_string('env_name', 'Pendulum-v0', 'name of environment')
+flags.DEFINE_string('env_name', 'InvertedPendulum-v0', 'name of environment')
 
 # network
 flags.DEFINE_string('hidden_dims', '[100, 100]', 'dimension of hidden layers')
@@ -61,15 +61,13 @@ def main(_):
       ['is_train', 'random_seed', 'monitor', 'display', 'log_level'])
   preprocess_conf(conf)
 
-  with tf.Session() as sess:
+  with tf.Session() as sess: # "with" ensures that unmanaged resources are cleaned up even in case of an exception
     # environment
     env = gym.make(conf.env_name)
     env._seed(conf.random_seed)
 
     assert isinstance(env.observation_space, gym.spaces.Box), \
       "observation space must be continuous"
-    assert isinstance(env.action_space, gym.spaces.Box), \
-      "action space must be continuous"
 
     # exploration strategy
     if conf.noise == 'ou':
@@ -89,7 +87,8 @@ def main(_):
       'hidden_dims': conf.hidden_dims, 
       'use_batch_norm': conf.use_batch_norm,
       'use_seperate_networks': conf.use_seperate_networks,
-      'hidden_w': conf.hidden_w, 'action_w': conf.action_w,
+      'hidden_w': conf.hidden_w, #init for weights_initializer in fc
+      'action_w': conf.action_w,
       'hidden_fn': conf.hidden_fn, 'action_fn': conf.action_fn,
       'w_reg': conf.w_reg,
     }
@@ -108,6 +107,7 @@ def main(_):
     # statistic
     stat = Statistic(sess, conf.env_name, model_dir, pred_network.variables, conf.update_repeat)
 
+                          #exploration strat
     agent = NAF(sess, env, strategy, pred_network, target_network, stat,
                 conf.discount, conf.batch_size, conf.learning_rate,
                 conf.max_steps, conf.update_repeat, conf.max_episodes)

@@ -8,16 +8,18 @@ from tensorflow.contrib.framework import get_variables
 from .utils import get_timestamp
 
 class NAF(object):
+
   def __init__(self, sess,
                env, strategy, pred_network, target_network, stat,
                discount, batch_size, learning_rate,
                max_steps, update_repeat, max_episodes):
     self.sess = sess
     self.env = env
+    # exploration strategy
     self.strategy = strategy
     self.pred_network = pred_network
     self.target_network = target_network
-    self.stat = stat
+    self.stat = stat # statistics
 
     self.discount = discount
     self.batch_size = batch_size
@@ -56,15 +58,15 @@ class NAF(object):
         # 1. predict
         action = self.predict(state)
 
-        # 2. step
+        # 2. act
         self.prestates.append(state)
         state, reward, terminal, _ = self.env.step(action)
         self.poststates.append(state)
 
         terminal = True if t == self.max_steps - 1 else terminal
 
-        # 3. perceive
         if is_train:
+        # 3. perceive
           q, v, a, l = self.perceive(state, reward, action, terminal)
 
           if self.stat:
@@ -76,72 +78,6 @@ class NAF(object):
 
     if monitor:
       self.env.monitor.close()
-
-  def run2(self, monitor=False, display=False, is_train=True):
-    target_y = tf.placeholder(tf.float32, [None], name='target_y')
-    loss = tf.reduce_mean(tf.squared_difference(target_y, tf.squeeze(self.pred_network.Q)), name='loss')
-
-    optim = tf.train.AdamOptimizer(self.learning_rate).minimize(loss)
-
-    self.stat.load_model()
-    self.target_network.hard_copy_from(self.pred_network)
-
-    # replay memory
-    prestates = []
-    actions = []
-    rewards = []
-    poststates = []
-    terminals = []
-
-    # the main learning loop
-    total_reward = 0
-    for i_episode in xrange(self.max_episodes):
-      observation = self.env.reset()
-      episode_reward = 0
-
-      for t in xrange(self.max_steps):
-        if display:
-          self.env.render()
-
-        # predict the mean action from current observation
-        x_ = np.array([observation])
-        u_ = self.pred_network.mu.eval({self.pred_network.x: x_})[0]
-
-        action = u_ + np.random.randn(1) / (i_episode + 1)
-
-        prestates.append(observation)
-        actions.append(action)
-
-        observation, reward, done, info = self.env.step(action)
-        episode_reward += reward
-
-        rewards.append(reward); poststates.append(observation); terminals.append(done)
-
-        if len(prestates) > 10:
-          loss_ = 0
-          for k in xrange(self.update_repeat):
-            if len(prestates) > self.batch_size:
-              indexes = np.random.choice(len(prestates), size=self.batch_size)
-            else:
-              indexes = range(len(prestates))
-
-            # Q-update
-            v_ = self.target_network.V.eval({self.target_network.x: np.array(poststates)[indexes]})
-            y_ = np.array(rewards)[indexes] + self.discount * np.squeeze(v_)
-
-            tmp1, tmp2 = np.array(prestates)[indexes], np.array(actions)[indexes]
-            loss_ += l_
-
-            self.target_network.soft_update_from(self.pred_network)
-
-        if done:
-          break
-
-      print "average loss:", loss_/k
-      print "Episode {} finished after {} timesteps, reward {}".format(i_episode + 1, t + 1, episode_reward)
-      total_reward += episode_reward
-
-    print "Average reward per episode {}".format(total_reward / self.episodes)
 
   def predict(self, state):
     u = self.pred_network.predict([state])[0]
@@ -171,6 +107,7 @@ class NAF(object):
       r_t = np.array(self.rewards)[indexes]
       u_t = np.array(self.actions)[indexes]
 
+      # generate target for training of q-network
       v = self.target_network.predict_v(x_t_plus_1, u_t)
       target_y = self.discount * np.squeeze(v) + r_t
 
@@ -189,6 +126,8 @@ class NAF(object):
       a_list.extend(a)
       l_list.append(l)
 
+      # soft update -> to.soft_update_from(from) -> tau*from+(1-tau)*to
+      # in every iteration
       self.target_network.soft_update_from(self.pred_network)
 
       logger.debug("q: %s, v: %s, a: %s, l: %s" \
