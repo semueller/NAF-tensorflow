@@ -109,6 +109,7 @@ class NAF(object):
 
       # generate target for training of q-network
       v = self.target_network.predict_v(x_t_plus_1, u_t)
+      # as in paper: target is reward + discounted value
       target_y = self.discount * np.squeeze(v) + r_t
 
       _, l, q, v, a = self.sess.run([

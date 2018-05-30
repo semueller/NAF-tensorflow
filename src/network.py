@@ -46,7 +46,7 @@ class Network:
             h = fc(h, hidden_dim, is_train, hidden_w, weight_reg=w_reg,
                    activation_fn=hidden_fn, use_batch_norm=use_batch_norm, scope='hid%d' % idx)
             pass
-          # V,l,mu are the same object in memory: hidden->{V, l, mu}
+          # V,l, mu get their input from the same object in memory: hidden->{V, l, mu}
           hid_outs['v'], hid_outs['l'], hid_outs['mu'] = h, h, h
 
       with tf.name_scope('value'):
@@ -85,6 +85,7 @@ class Network:
 
       with tf.name_scope('optimization'):
         self.target_y = tf.placeholder(tf.float32, [None], name='target_y')
+        # as in paper: mean of squared difference of target and q-value
         self.loss = tf.reduce_mean(tf.squared_difference(self.target_y, tf.squeeze(Q)), name='loss')
 
     self.is_train = is_train
