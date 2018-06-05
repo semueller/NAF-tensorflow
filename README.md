@@ -50,20 +50,10 @@ The TensorBoard binary provided here is TensorBoard 0.4.0rc3 and the only one I 
 
 ## Results
 
-Training details of `Pendulum-v0` with different hyperparameters.
-
-    $ python main.py --env=Pendulum-v0 # dark green
-    $ python main.py --env=Pendulum-v0 --action_fn=tanh # light green
-    $ python main.py --env=Pendulum-v0 --use_batch_norm=True # yellow
-    $ python main.py --env=Pendulum-v0 --use_seperate_networks=True # green
-
-![Pendulum-v0_2016-07-15](https://github.com/carpedm20/naf-tensorflow/blob/master/assets/Pendulum-v0_2016-07-15.png)
-
 
 ## References
 
 - [rllab](https://github.com/rllab/rllab.git)
-- [keras implementation](https://gym.openai.com/evaluations/eval_CzoNQdPSAm0J3ikTBSTCg)
 
 ## Original Author 
 
