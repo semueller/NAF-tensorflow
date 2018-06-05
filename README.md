@@ -36,9 +36,11 @@ To test and record the screens with gym:
     $ python main.py --env=InvertedPendulum-v1 --is_train=False --monitor=True
 
 To visualize training results with tensorboard:
+
     # activate some other python environment with python=3.5
     $ ./tensorboard --logdir=./logs
-This tensorboard version is TensorBoard 0.4.0rc3 and the only one I was able to actually visualize the logs with
+
+The TensorBoard binary provided here is TensorBoard 0.4.0rc3 and the only one I was able to actually visualize the logs with
 
 
 
