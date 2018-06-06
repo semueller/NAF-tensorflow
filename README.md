@@ -58,3 +58,4 @@ The TensorBoard binary provided here is TensorBoard 0.4.0rc3 and the only one I 
 ## Original Author 
 
 Taehoon Kim / [@carpedm20](http://carpedm20.github.io/)
+Original [git](https://github.com/carpedm20/NAF-tensorflow)
