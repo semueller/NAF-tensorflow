@@ -64,3 +64,4 @@ Training details of `Pendulum-v0` with different hyperparameters.
 ## Original Author 
 
 Taehoon Kim / [@carpedm20](http://carpedm20.github.io/)
+Original [git](https://github.com/carpedm20/NAF-tensorflow)
