@@ -43,7 +43,9 @@ class NAF(object):
       self.optim = tf.train.AdamOptimizer(self.learning_rate).minimize(self.loss)
 
   def run(self, monitor=False, display=False, is_train=True):
+    # load checkpoints
     self.stat.load_model()
+    # init target network
     self.target_network.hard_copy_from(self.pred_network)
 
     if monitor:
@@ -66,7 +68,7 @@ class NAF(object):
         terminal = True if t == self.max_steps - 1 else terminal
 
         if is_train:
-        # 3. perceive
+          # 3. perceive
           q, v, a, l = self.perceive(state, reward, action, terminal)
 
           if self.stat:
@@ -109,6 +111,7 @@ class NAF(object):
 
       # generate target for training of q-network
       v = self.target_network.predict_v(x_t_plus_1, u_t)
+
       # as in paper: target is reward + discounted value
       target_y = self.discount * np.squeeze(v) + r_t
 
@@ -122,10 +125,7 @@ class NAF(object):
         self.pred_network.is_train: True,
       })
 
-      q_list.extend(q)
-      v_list.extend(v)
-      a_list.extend(a)
-      l_list.append(l)
+      q_list.extend(q), v_list.extend(v), a_list.extend(a), l_list.append(l)
 
       # soft update -> to.soft_update_from(from) -> tau*from+(1-tau)*to
       # in every iteration
