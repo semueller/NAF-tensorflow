@@ -18,7 +18,7 @@ flags.DEFINE_string('env_name', 'InvertedPendulum-v0', 'name of environment')
 flags.DEFINE_string('hidden_dims', '[100, 100]', 'dimension of hidden layers')
 flags.DEFINE_boolean('use_batch_norm', False, 'use batch normalization or not')
 flags.DEFINE_boolean('clip_action', False, 'whether to clip an action with given bound')
-flags.DEFINE_boolean('use_seperate_networks', True, 'use seperate networks for mu, V and A')
+flags.DEFINE_boolean('use_seperate_networks', False, 'use seperate networks for mu, V and A')
 flags.DEFINE_string('hidden_w', 'uniform_big', 'weight initialization of hidden layers [uniform_small, uniform_big, he]')
 flags.DEFINE_string('hidden_fn', 'tanh', 'activation function of hidden layer [none, tanh, relu]')
 flags.DEFINE_string('action_w', 'uniform_big', 'weight initilization of action layer [uniform_small, uniform_big, he]')
@@ -38,6 +38,7 @@ flags.DEFINE_integer('batch_size', 100, 'The size of batch for minibatch trainin
 flags.DEFINE_integer('max_steps', 200, 'maximum # of steps for each episode')
 flags.DEFINE_integer('update_repeat', 10, 'maximum # of q-learning updates for each step')
 flags.DEFINE_integer('max_episodes', 10000, 'maximum # of episodes to train')
+
 
 # Debug
 flags.DEFINE_boolean('is_train', True, 'training or testing')
